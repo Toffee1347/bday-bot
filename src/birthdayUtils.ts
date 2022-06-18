@@ -46,7 +46,7 @@ export async function setPeopleOnDay(day: Day, people: string[], env: Env): Prom
 
 export function birthdayToString(birthday: Day): string {
 	const numberFollower = (() => {
-		switch (birthday.day) {
+		switch (birthday.day % 10) {
 			case 1:
 				return 'st';
 			case 2:
