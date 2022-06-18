@@ -18,7 +18,7 @@
     "devstart": "nodemon --watch \"src/*\" --ext \"ts\"",
     "mf-start": "miniflare dist/index.mjs -m --env .env --kv-persist ./data/",
     "build": "node build.js",
-	"update-commands": "node src/deploy-commands.js",
+    "update-commands": "node src/deploy-commands.js",
     "publish": "wrangler publish"
   },
   "dependencies": {
