@@ -1,0 +1,19 @@
+name = ""
+main = "src/index.ts"
+compatibility_date = "2022-06-05"
+kv_namespaces = [
+	{ binding = "BOT_KV", id = "<ID>" }
+]
+
+[triggers]
+crons = ["0 0 * * *"]
+
+[vars]
+application_id = ""
+dev_guild_id = ""
+
+[env.production]
+application_id = ""
+dev_guild_id = ""
+
+# `token` and `discord_public_key` need to be set as wrangler secrets
