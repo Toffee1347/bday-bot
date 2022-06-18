@@ -9,7 +9,6 @@ import sendMessages from './sendMessages';
 export interface Env {
 	BOT_KV: KVNamespace;
 	discord_public_key: string;
-	application_id: string;
 	token: string;
 }
 

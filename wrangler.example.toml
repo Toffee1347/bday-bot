@@ -11,9 +11,6 @@ crons = ["0 0 * * *"]
 [build]
 command = "npm run build"
 
-[vars]
-application_id = ""
-
 # The necessary secrets are:
 # - token
 # - discord_public_key

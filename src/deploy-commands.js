@@ -5,25 +5,47 @@ import {commands, adminCommands} from './commands.js';
 import dotenv from 'dotenv';
 dotenv.config();
 
-async function registerGuildCommands(env, commands) {
-	const applicationId = env.APPLICATION_ID;
-	const devGuildId = env.DEV_GUILD_ID;
+const production = process.argv.includes('--production') || process.argv.includes('-p');
+if (production) console.log('Registering commands with production variables');
+else console.log('Registering commands with development variables');
+
+const global = process.argv.includes('--global') || process.argv.includes('-g');
+if (global) console.log('Registering commands globally');
+else console.log('Registering commands for guild');
+
+const envVars = process.env;
+const env = {
+	application_id: production ? envVars.producation_application_id : envVars.application_id,
+	guild_id: production ? envVars.producation_guild_id : envVars.guild_id,
+	token: production ? envVars.production_token : envVars.token,
+}
+
+if (global) {
+	await registerGlobalCommands(commands);
+	await registerGuildCommands(adminCommands);
+} else {
+	await registerGuildCommands([...commands, ...adminCommands]);
+}
+
+async function registerGuildCommands(commands) {
+	const applicationId = env.application_id;
+	const devGuildId = env.guild_id;
 
 	const url = `https://discord.com/api/v10/applications/${applicationId}/guilds/${devGuildId}/commands`;
-	await registerCommands(url, env.token, commands);
+	await registerCommands(url, commands);
 }
 
-async function registerGlobalCommands(env, commands) {
-	const applicationId = env.APPLICATION_ID;
+async function registerGlobalCommands(commands) {
+	const applicationId = env.application_id;
 	const url = `https://discord.com/api/v10/applications/${applicationId}/commands`;
-	await registerCommands(url, env.token, commands);
+	await registerCommands(url, commands);
 }
 
-async function registerCommands(url, token, commands) {
+async function registerCommands(url, commands) {
 	const response = await fetch(url, {
 		headers: {
 			'Content-Type': 'application/json',
-			Authorization: `Bot ${token}`,
+			Authorization: `Bot ${env.token}`,
 		},
 		method: 'PUT',
 		body: JSON.stringify(commands),
@@ -38,16 +60,3 @@ async function registerCommands(url, token, commands) {
 	}
 	return response;
 }
-
-async function initRegisterCommands(type) {
-	const env = process.env;
-
-	if (type === 'guild') {
-		await registerGuildCommands(env, [...commands, ...adminCommands]);
-	} else {
-		await registerGlobalCommands(env, commands);
-		await registerGuildCommands(env, adminCommands);
-	}
-}
-
-initRegisterCommands('guild');

@@ -1,4 +1,4 @@
-import {Env} from '..';
+import {Env} from './../index';
 
 const requestQueue: {
 	apiUrl: string;
@@ -53,7 +53,6 @@ async function runRequestQueue(env: Env, ignoreRequestRunning = false) {
 		const retryAfter = req.headers.get('x-ratelimit-reset-after');
 		console.log(`Rate limit recieved, retrying in ${retryAfter} seconds`);
 		const retryTime = parseFloat(retryAfter || '5');
-		console.log(retryTime);
 		setTimeout(() => {
 			runRequestQueue(env, true);
 		}, retryTime * 1000);
