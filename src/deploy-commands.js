@@ -18,8 +18,8 @@ if (reset) console.log('Resetting global commands');
 
 const envVars = process.env;
 const env = {
-	application_id: production ? envVars.producation_application_id : envVars.application_id,
-	guild_id: production ? envVars.producation_guild_id : envVars.guild_id,
+	application_id: production ? envVars.production_application_id : envVars.application_id,
+	guild_id: production ? envVars.production_guild_id : envVars.guild_id,
 	token: production ? envVars.production_token : envVars.token,
 }
 
