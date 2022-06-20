@@ -6,7 +6,7 @@ To run the bot locally, first clone this repository with:
 ```
 git clone https://github.com/Toffee1347/bday-bot
 ```
-You'll need to have [wrangler](https://developers.cloudflare.com/workers/wrangler/) installed to run on workers. Within wrangler, you need to create a worker then copy the contents from [wrangler.example.toml](wrangler.example.toml) to wrangler.toml (and add name and KV id).
+You'll need to have [wrangler](https://developers.cloudflare.com/workers/wrangler/) installed to run on workers. Within wrangler, you need to create a worker then copy the contents from [wrangler.example.toml](wrangler.example.toml) to wrangler.toml (and add name and KV id). To have access to birthday alerts, the `server members intent` needs to be enabled in the Devloper Portal.
 
 Next add the secrets needed with (only do this if planning to run the bot on workers):
 ```
