@@ -81,6 +81,28 @@ export const commands = [
 			},
 		],
 	},
+	{
+		name: 'set-alerts-channel',
+		description: 'Set the channel where the bot will send birthday alerts',
+		options: [
+			{
+				name: 'channel',
+				description: 'The channel where the bot will send birthday alerts',
+				type: 7, // CHANNEL
+				required: true,
+			},
+			{
+				name: 'message',
+				description: 'The message sent to the channel, replace the user tag with {user}',
+				type: 3, // STRING
+				required: true,
+			},
+		],
+	},
+	{
+		name: 'remove-alerts-channel',
+		description: 'Remove the channel where the bot will send birthday alerts',
+	},
 ];
 
 export const adminCommands = [

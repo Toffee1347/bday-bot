@@ -13,6 +13,9 @@ const global = process.argv.includes('--global') || process.argv.includes('-g');
 if (global) console.log('Registering commands globally');
 else console.log('Registering commands for guild');
 
+const reset = process.argv.includes('--reset') || process.argv.includes('-r');
+if (reset) console.log('Resetting global commands');
+
 const envVars = process.env;
 const env = {
 	application_id: production ? envVars.producation_application_id : envVars.application_id,
@@ -24,6 +27,7 @@ if (global) {
 	await registerGlobalCommands(commands);
 	await registerGuildCommands(adminCommands);
 } else {
+	if (reset) await registerGlobalCommands([]);
 	await registerGuildCommands([...commands, ...adminCommands]);
 }
 

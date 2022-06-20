@@ -32,8 +32,8 @@ export async function setBirthday(userId: string, birthday: Day, env: Env): Prom
 	await env.BOT_KV.put(`birthday_${userId}`, `${birthday.day}-${birthday.month}`);
 }
 
-export async function getPeopleOnDay(day: Day, row: true, env: Env): Promise<string>;
-export async function getPeopleOnDay(day: Day, row: false, env: Env): Promise<string[]>;
+export async function getPeopleOnDay(day: Day, raw: true, env: Env): Promise<string>;
+export async function getPeopleOnDay(day: Day, raw: false, env: Env): Promise<string[]>;
 export async function getPeopleOnDay(day: Day, raw: boolean, env: Env): Promise<string[] | string> {
 	const people = await env.BOT_KV.get(`day_${day.day}-${day.month}`);
 	if (!people) return raw ? '' : [];
@@ -60,10 +60,20 @@ export function birthdayToString(birthday: Day): string {
 	return `${birthday.day}${numberFollower} ${months[birthday.month]}`;
 }
 
-export function formatBirthdayMessage(baseMessage: string, userId: string, username: string): string {
+export function formatBirthdayMessage(baseMessage: string, userId: string, username?: string): string {
 	return baseMessage
 		.replace(/{user}/g, `<@${userId}>`)
-		.replace(/{username}/g, username);
+		.replace(/{username}/g, username ? username : '');
+}
+
+export async function getBirthdaysToday(env: Env): Promise<string[]> {
+	const date = new Date();
+	const day = {
+		day: date.getDate(),
+		month: date.getMonth(),
+	};
+
+	return await getPeopleOnDay(day, false, env);
 }
 
 export const months = [

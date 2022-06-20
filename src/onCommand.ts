@@ -7,6 +7,7 @@ import adminSetBirthday from './commands/adminSetBirthday';
 import handleError from './handleError';
 import {Message} from './utils';
 import {Env} from './index';
+import setAlertsChannelCommand from './commands/setAlertsChannel';
 
 export default async function onCommand(command: APIChatInputApplicationCommandInteraction, env: Env): Promise<Message> {
 	const user = command.member?.user || command.user;
@@ -49,6 +50,21 @@ export default async function onCommand(command: APIChatInputApplicationCommandI
 				) return handleError();
 
 				return await setBithdayMessage(command.data.options[0].value, user.id, user.username, env).catch(handleError);
+			case 'set-alerts-channel':
+				if (!command.guild_id || !command.member) return new Message('Please run this command in a server');
+
+				// Set option types for ts
+				if (
+					!command.data.options ||
+					command.data.options[0].type !== ApplicationCommandOptionType.Channel ||
+					command.data.options[1].type !== ApplicationCommandOptionType.String
+				) return handleError();
+
+				return await setAlertsChannelCommand(command.data.options[0].value, command.guild_id, command.data.options[1].value, command.member.permissions, user.id, env).catch(handleError);
+			case 'remove-alerts-channel':
+				if (!command.guild_id || !command.member) return new Message('Please run this command in a server');
+
+				return await setAlertsChannelCommand('', command.guild_id, '', command.member.permissions, user.id, env).catch(handleError);
 		}
 	} catch (e) {
 		console.error(e);
